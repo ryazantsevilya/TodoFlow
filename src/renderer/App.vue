@@ -10,27 +10,34 @@
         </div>
     </div>
     <div class="todo-item-list">
-      <div v-for="(item, index) in todo" :key="index">
-        <div class="todo-item" v-if="item.flowId == flows[selectedFlowIndex].id"> 
-          <div @click="item.ready = !item.ready" class="ready-checked" :class="{'ready-checked--active': item.ready}"></div>
-          <textarea-autosize
-            class="input-task"
-            :class="{'input-task--ready': item.ready}"
-            ref="myTextarea"
-            v-model="item.text"
-            rows="1"
-            :min-height="50"
-          />
-          <div class="button-delete" @click="deleteTodoItem(index)"></div>
-        </div>
-      </div>
+      <draggable v-model="todo" group="todo" @start="drag=true" @end="drag=false">
+          <div v-for="(item, index) in todo" :key="index">
+            <div class="todo-item" v-if="item.flowId == flows[selectedFlowIndex].id"> 
+              <div @click="item.ready = !item.ready" class="ready-checked" :class="{'ready-checked--active': item.ready}"></div>
+              <textarea-autosize
+                class="input-task"
+                :class="{'input-task--ready': item.ready}"
+                ref="myTextarea"
+                v-model="item.text"
+                rows="1"
+                :min-height="50"
+              />
+              <div class="button-delete" @click="deleteTodoItem(index)"></div>
+            </div>
+          </div>
+      </draggable>
       <div @click="addTodoItem()" class="button"></div>
     </div>
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 export default {
+  components: {
+    draggable
+  },
   created: function () {
     let todos = this.$userStore.get('todo')
     let flow = this.$userStore.get('flows')
@@ -82,7 +89,8 @@ export default {
     return {
       todo: [],
       flows: [],
-      selectedFlowIndex: 0
+      selectedFlowIndex: 0,
+      drag: false
     }
   },
   methods: {
@@ -177,6 +185,14 @@ body {
 *::-webkit-scrollbar-thumb {
   background-color: rgb(45, 51, 74);
   border-radius: 20px;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
 }
 
 .movebar {
