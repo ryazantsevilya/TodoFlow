@@ -14,14 +14,7 @@
           <div v-for="(item, index) in todo" :key="index">
             <div class="todo-item" v-if="item.flowId == flows[selectedFlowIndex].id"> 
               <div @click="item.ready = !item.ready" class="ready-checked" :class="{'ready-checked--active': item.ready}"></div>
-              <textarea-autosize
-                class="input-task"
-                :class="{'input-task--ready': item.ready}"
-                ref="myTextarea"
-                v-model="item.text"
-                rows="1"
-                :min-height="50"
-              />
+              <task class="input-task" :class="{'input-task--ready': item.ready}" v-model="item.text"></task>
               <div class="button-delete" @click="deleteTodoItem(index)"></div>
             </div>
           </div>
@@ -33,10 +26,12 @@
 
 <script>
 import draggable from 'vuedraggable'
+import task from './components/Task'
 
 export default {
   components: {
-    draggable
+    draggable,
+    task
   },
   created: function () {
     let todos = this.$userStore.get('todo')
@@ -245,10 +240,14 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+.input-task, p:focus{
+    outline: none;
+}
+
 .input-task--ready {
-  border: 1;
+  border: 1px solid;
   border-color: rgba(34, 220, 175, 0.18);
-  border-style: solid;
+  overflow:visible;
 }
 
 .input-task:focus {
