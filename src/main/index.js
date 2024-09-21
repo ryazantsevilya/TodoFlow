@@ -21,7 +21,7 @@ const winURL = process.env.NODE_ENV === 'development'
 function windowStateKeeper (windowName) {
   let window, windowState
   function setBounds () {
-    if (appConfig.has(`windowState.${windowName}`)) {
+    if (appConfig.hasSync(`windowState.${windowName}`)) {
       windowState = appConfig.getSync()['windowState'][windowName]
       return
     }

@@ -63,6 +63,7 @@
     "axios": "^0.18.0",
     "electron-settings": "^4.0.2",
     "electron-store": "^6.0.1",
+    "process": "^0.11.10",
     "typeface-roboto": "^1.1.13",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
